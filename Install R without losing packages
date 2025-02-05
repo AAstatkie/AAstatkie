@@ -1,0 +1,22 @@
+#---
+# To retain all of your previously installed installed packages when installing a new version of R.
+# Based on the tutorial at https://www.youtube.com/watch?v=ZKBeV4BNeuk&ab_channel=MohammadNasirAbdullah
+
+# 1. Before you upgrade, build a temp file with all of your old packages.
+all<-installed.packages()
+all
+old<-as.vector(all[is.na(all[,"Priority"]), 1])
+save(old, file="old.installed.rda")
+getwd()
+
+# 2. Install the new version of R and let it do its thing.
+
+# 3. Once you've got the new version up and running, reload the saved packages 
+	# and re-install them from CRAN.
+current<-installed.packages()
+new<-as.vector(current[is.na(current[,"Priority"]), 1]) # Not to install already installed packages (in base R)
+load(old) # Or, if you have R or R Studio restarted, go to File -> Open File and locate the the file "old.installed.rda" and load it.
+check<-setdiff(old, new)
+install.packages(check)
+
+# ===============================E.N.D.=============================
